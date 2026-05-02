@@ -2,18 +2,18 @@ import ge.tbc.models.PlaceOrderForPet;
 import ge.tbc.steps.PlaceOrderApiStep;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.json.JSONObject;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
+
 
 public class Scenario1 {
     @Test
     public void placeOrderTest(){
         RestAssured.useRelaxedHTTPSValidation();
         PlaceOrderForPet request = new PlaceOrderForPet(
-                11,
+                8,
                 10,
                 1,
                 "2026-05-01T19:22:22.917Z",
@@ -21,24 +21,36 @@ public class Scenario1 {
                 true
         );
 
-
         PlaceOrderApiStep step = new PlaceOrderApiStep();
-        Response response = step
+        //POST
+        Response postResponse = step
                 .postOrderForPet(request)
                 .getResponse();
 
+        PlaceOrderForPet postResponseBody = postResponse.as(PlaceOrderForPet.class);
+         //POST assertions
+        Assert.assertEquals(postResponseBody.getId(), request.getId());
+        Assert.assertEquals(postResponseBody.getPetId(), request.getPetId());
+        Assert.assertEquals(postResponseBody.getQuantity(), request.getQuantity());
+        Assert.assertEquals(postResponseBody.getStatus(), request.getStatus());
+        Assert.assertEquals(postResponse.getStatusCode(), 200, "Status Code is not 200");
+
+
+        int orderId = postResponseBody.getId();
+        //GET
+        Response getResponse = step
+                .getOrderById(orderId)
+                        .getResponse();
 
 
 
-        Assert.assertEquals(response.getStatusCode(), 200, "Status Code is not 200");
+        PlaceOrderForPet getResponseBody = getResponse.as(PlaceOrderForPet.class);
 
-
-        PlaceOrderForPet responseBody =
-                response.as(PlaceOrderForPet.class);
-
-        Assert.assertEquals(responseBody.getId(), 11);
-        Assert.assertEquals(responseBody.getPetId(), 10);
-        Assert.assertEquals(responseBody.getQuantity(), 1);
-        Assert.assertEquals(responseBody.getStatus(), "placed");
+        //GET Assertions
+        Assert.assertEquals(getResponseBody.getId(), orderId);
+        Assert.assertEquals(getResponseBody.getPetId(), 10);
+        Assert.assertEquals(getResponseBody.getQuantity(), 1);
+        Assert.assertEquals(getResponseBody.getStatus(), "placed");
+        Assert.assertEquals(getResponse.getStatusCode(), 200, "Status code is not 200");
     }
 }

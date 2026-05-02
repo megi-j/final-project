@@ -23,5 +23,13 @@ public class PlaceOrderApiStep {
     public Response getResponse() {
         return response;
     }
+    public PlaceOrderApiStep getOrderById(int orderId){
+        response = RestAssured.given()
+                .baseUri(Constants.BASE_URL)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/store/order/" + orderId);
+        return this;
+    }
 
 }
