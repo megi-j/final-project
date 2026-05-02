@@ -60,5 +60,20 @@ public class Scenario1 {
 
         // DELETE assertions
         Assert.assertEquals(deleteResponse.getStatusCode(), 200, "Status code is not 200");
+
+        //DELETE again
+        Response secondDeleteResponse = step
+                .deteleteOrderById(orderId)
+                .getResponse();
+
+        Assert.assertEquals(secondDeleteResponse.getStatusCode(), 404);
+        String message =
+                secondDeleteResponse.jsonPath().getString("message");
+
+        Assert.assertEquals(
+                message,
+                "Order Not Found",
+                "Unexpected error message"
+        );
     }
 }
