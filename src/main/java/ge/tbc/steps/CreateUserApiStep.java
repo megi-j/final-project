@@ -22,4 +22,12 @@ public class CreateUserApiStep {
     public Response getResponse() {
         return response;
     }
+    public CreateUserApiStep getUserByUsername(String username){
+         response = RestAssured.given()
+                 .baseUri(Constants.BASE_URL)
+                 .accept(ContentType.JSON)
+                 .when()
+                 .get("user/" + username);
+         return this;
+    }
 }
