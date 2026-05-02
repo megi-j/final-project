@@ -89,6 +89,17 @@ public class Scenario2 {
                 200,
                 "PUT method did not return status code 200");
 
+        //GET
+        Response getResponse = step
+                .getUserByUsername(originalUser.getUsername())
+                .getResponse();
+
+        CreateUser getResponseBody = getResponse.as(CreateUser.class);
+        //GET assertions
+        Assert.assertEquals(getResponse.getStatusCode(), 200, "Status code is not 200");
+        Assert.assertEquals(getResponseBody.getPhone(), "+995595783283", "phone number does not updated correctly");
+        System.out.println(getResponseBody);
+
     }
 
 }
