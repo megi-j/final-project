@@ -30,4 +30,15 @@ public class CreateUserApiStep {
                  .get("user/" + username);
          return this;
     }
+    public  CreateUserApiStep putUserPhone(String username, CreateUser updateRequest){
+         response = RestAssured.given()
+                 .baseUri(Constants.BASE_URL)
+                 .contentType(ContentType.JSON)
+                 .accept(ContentType.JSON)
+                 .body(updateRequest)
+                 .when()
+                 .put("user/" + username);
+         return this;
+
+    }
 }
