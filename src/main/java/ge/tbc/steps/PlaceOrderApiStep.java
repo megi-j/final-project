@@ -31,5 +31,12 @@ public class PlaceOrderApiStep {
                 .get("/store/order/" + orderId);
         return this;
     }
-
+    public PlaceOrderApiStep deteleteOrderById(int orderId){
+        response = RestAssured.given()
+                .baseUri(Constants.BASE_URL)
+                .accept(ContentType.JSON)
+                .when()
+                .delete("/store/order/" + orderId);
+        return this;
+    }
 }

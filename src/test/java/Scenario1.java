@@ -52,5 +52,13 @@ public class Scenario1 {
         Assert.assertEquals(getResponseBody.getQuantity(), 1);
         Assert.assertEquals(getResponseBody.getStatus(), "placed");
         Assert.assertEquals(getResponse.getStatusCode(), 200, "Status code is not 200");
+
+        //DELETE
+        Response deleteResponse = step
+                .deteleteOrderById(orderId)
+                .getResponse();
+
+        // DELETE assertions
+        Assert.assertEquals(deleteResponse.getStatusCode(), 200, "Status code is not 200");
     }
 }
