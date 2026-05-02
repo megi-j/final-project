@@ -75,5 +75,13 @@ public class Scenario1 {
                 "Order Not Found",
                 "Unexpected error message"
         );
+        //GET after DELETE expect 404
+        Response getAfterDeleteResponse = step
+                .getOrderById(orderId)
+                .getResponse();
+
+        Assert.assertEquals(getAfterDeleteResponse.getStatusCode(), 404, "Status Code is not 404");
+        String messageError = getAfterDeleteResponse.jsonPath().getString("message");
+        Assert.assertEquals(messageError, "Order not found", "Unexpected error message");
     }
 }
