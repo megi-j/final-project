@@ -39,6 +39,14 @@ public class CreateUserApiStep {
                  .when()
                  .put("user/" + username);
          return this;
+    }
+    public CreateUserApiStep getLoginUser(String username, String password){
+         response = RestAssured.given()
+                 .baseUri(Constants.BASE_URL)
+                 .accept(ContentType.JSON)
+                 .when()
+                 .get("user/login?username=" + username + "&password=" + password);
+         return this;
 
     }
 }

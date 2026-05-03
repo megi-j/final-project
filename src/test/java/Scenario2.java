@@ -101,5 +101,33 @@ public class Scenario2 {
         System.out.println(getResponseBody);
 
     }
+    @Test
+    public void loginUserTest(){
+        RestAssured.useRelaxedHTTPSValidation();
+        String username = "meg1";
+        String password = "Aa123123#";
 
+        CreateUserApiStep step = new CreateUserApiStep();
+        //GET
+        Response loginResponse = step
+                .getLoginUser(username, password)
+                .getResponse();
+
+        Assert.assertEquals(
+                loginResponse.getStatusCode(),
+                200,
+                "Status code is not 200"
+        );
+
+        String message = loginResponse.jsonPath().getString("message");
+        Assert.assertNotNull(
+                message,
+                "Login message is null"
+        );
+        Assert.assertFalse(
+                message.isEmpty(),
+                "Login message is empty"
+        );
+        System.out.println("Login message: " + message);
+    }
 }
