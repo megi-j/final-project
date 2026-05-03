@@ -3,15 +3,25 @@ import ge.tbc.steps.CreateUserApiStep;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class Scenario2 {
+    private CreateUserApiStep step;
+    private String username;
+    private String password = "Aa123123#";
+
+    @BeforeMethod
+    public void setUp(){
+        RestAssured.useRelaxedHTTPSValidation();
+        step = new CreateUserApiStep();
+        username = "user_" + System.currentTimeMillis();
+    }
     @Test
     public void createUserTest() {
-        RestAssured.useRelaxedHTTPSValidation();
         CreateUser request = new CreateUser(
                 3,
-                "meg11",
+                username,
                 "megi",
                 "jabanashvili",
                 "jabanashvilimegi@gmail.com",
@@ -19,15 +29,13 @@ public class Scenario2 {
                 "595783283",
                 1
         );
-        CreateUserApiStep step = new CreateUserApiStep();
+
         //POST
         Response postResponse = step
                 .postCreateUser(request)
                 .getResponse();
 
         Assert.assertEquals(postResponse.getStatusCode(), 200, "Status Code is not 200");
-
-        String username = request.getUsername();
 
         //GET
         Response getResponse = step
@@ -49,11 +57,9 @@ public class Scenario2 {
     }
     @Test
     public void updatedUserTest(){
-        RestAssured.useRelaxedHTTPSValidation();
-
         CreateUser originalUser = new CreateUser(
                 3,
-                "meg11",
+                username,
                 "megi",
                 "jabanashvili",
                 "jabanashvilimegi@gmail.com",
@@ -61,12 +67,9 @@ public class Scenario2 {
                 "595783283",
                 1
         );
-        CreateUserApiStep step = new CreateUserApiStep();
-
         // POST - მომხმარებლის შექმნა
         step.postCreateUser(originalUser);
         Assert.assertEquals(step.getResponse().getStatusCode(), 200);
-
 
         // ვცვლი მხოლოდ phone-ს
         CreateUser updatedUser = new CreateUser(
@@ -103,12 +106,20 @@ public class Scenario2 {
     }
     @Test
     public void loginUserTest(){
-        RestAssured.useRelaxedHTTPSValidation();
-        String username = "meg11";
-        String password = "Aa123123#";
 
-        CreateUserApiStep step = new CreateUserApiStep();
-        //GET
+        CreateUser user = new CreateUser(
+                3,
+                username,
+                "megi",
+                "jabanashvili",
+                "jabanashvilimegi@gmail.com",
+                password,
+                "595783283",
+                1
+        );
+        step.postCreateUser(user);
+        Assert.assertEquals(step.getResponse().getStatusCode(), 200);
+
         Response loginResponse = step
                 .getLoginUser(username, password)
                 .getResponse();
@@ -132,9 +143,6 @@ public class Scenario2 {
     }
     @Test
     public void logoutUserTest(){
-        RestAssured.useRelaxedHTTPSValidation();
-
-        CreateUserApiStep step = new CreateUserApiStep();
         //GET
         Response logoutResponse = step
                 .getLogoutUser()
@@ -154,14 +162,21 @@ public class Scenario2 {
     }
     @Test
     public void deleteUserTest(){
-        RestAssured.useRelaxedHTTPSValidation();
 
-        String username = "meg11";
-        String password = "Aa123123#";
-        CreateUserApiStep step = new CreateUserApiStep();
-
-        step.getLoginUser(username, password);
+        CreateUser user = new CreateUser(
+                3,
+                username,
+                "megi",
+                "jabanashvili",
+                "jabanashvilimegi@gmail.com",
+                password,
+                "595783283",
+                1
+        );
+        step.postCreateUser(user);
         Assert.assertEquals(step.getResponse().getStatusCode(), 200);
+
+
 
         //DELETE
         Response deleteResponse = step
