@@ -49,4 +49,12 @@ public class CreateUserApiStep {
          return this;
 
     }
+    public CreateUserApiStep getLogoutUser(){
+         response = RestAssured.given()
+                 .baseUri(Constants.BASE_URL)
+                 .accept(ContentType.JSON)
+                 .when()
+                 .get("user/logout");
+         return this;
+    }
 }

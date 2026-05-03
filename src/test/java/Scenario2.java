@@ -130,4 +130,26 @@ public class Scenario2 {
         );
         System.out.println("Login message: " + message);
     }
+    @Test
+    public void logoutUserTest(){
+        RestAssured.useRelaxedHTTPSValidation();
+
+        CreateUserApiStep step = new CreateUserApiStep();
+        //GET
+        Response logoutResponse = step
+                .getLogoutUser()
+                .getResponse();
+
+        Assert.assertEquals(logoutResponse.getStatusCode(), 200, "Status code is not 200");
+        String message = logoutResponse.jsonPath().getString("message");
+
+        Assert.assertEquals(
+                message,
+                "ok",
+                "Logout message is not 'ok'"
+        );
+
+        System.out.println("Logout message: " + message);
+
+    }
 }
