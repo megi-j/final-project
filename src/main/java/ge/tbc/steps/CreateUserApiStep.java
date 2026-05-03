@@ -57,4 +57,12 @@ public class CreateUserApiStep {
                  .get("user/logout");
          return this;
     }
+    public CreateUserApiStep deleteUser(String username){
+         response = RestAssured.given()
+                 .baseUri(Constants.BASE_URL)
+                 .accept(ContentType.JSON)
+                 .when()
+                 .delete("user/"+ username);
+         return this;
+    }
 }

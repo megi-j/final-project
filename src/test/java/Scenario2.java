@@ -11,7 +11,7 @@ public class Scenario2 {
         RestAssured.useRelaxedHTTPSValidation();
         CreateUser request = new CreateUser(
                 3,
-                "meg1",
+                "meg11",
                 "megi",
                 "jabanashvili",
                 "jabanashvilimegi@gmail.com",
@@ -53,7 +53,7 @@ public class Scenario2 {
 
         CreateUser originalUser = new CreateUser(
                 3,
-                "meg1",
+                "meg11",
                 "megi",
                 "jabanashvili",
                 "jabanashvilimegi@gmail.com",
@@ -104,7 +104,7 @@ public class Scenario2 {
     @Test
     public void loginUserTest(){
         RestAssured.useRelaxedHTTPSValidation();
-        String username = "meg1";
+        String username = "meg11";
         String password = "Aa123123#";
 
         CreateUserApiStep step = new CreateUserApiStep();
@@ -150,6 +150,40 @@ public class Scenario2 {
         );
 
         System.out.println("Logout message: " + message);
+
+    }
+    @Test
+    public void deleteUserTest(){
+        RestAssured.useRelaxedHTTPSValidation();
+
+        String username = "meg11";
+        String password = "Aa123123#";
+        CreateUserApiStep step = new CreateUserApiStep();
+
+        step.getLoginUser(username, password);
+        Assert.assertEquals(step.getResponse().getStatusCode(), 200);
+
+        //DELETE
+        Response deleteResponse = step
+                .deleteUser(username)
+                .getResponse();
+
+
+        Assert.assertEquals(
+                deleteResponse.getStatusCode(),
+                200,
+                "Status code is not 200"
+        );
+        String message = deleteResponse.jsonPath().getString("message");
+
+
+        Assert.assertEquals(
+                message,
+                username,
+                "Delete message is not equal to deleted username"
+        );
+
+        System.out.println("Delete message: " + message);
 
     }
 }
