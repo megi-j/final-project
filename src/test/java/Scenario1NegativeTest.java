@@ -54,4 +54,26 @@ public class Scenario1NegativeTest {
         Assert.assertEquals(postResponse.getStatusCode(), 500);
         Assert.assertEquals(postResponse.jsonPath().getString("message"), "something bad happened");
     }
+    @Test
+    public void placeOrderWithInvalidQuantity(){
+        RestAssured.useRelaxedHTTPSValidation();
+
+        String invalidBody = """
+            {
+              "id": 6,
+              "petId": 11,
+              "quantity": "test",
+              "shipDate": "2026-05-01T19:22:22.917Z",
+              "status": "placed",
+              "complete": true
+            }
+            """;
+        PlaceOrderApiStep step = new PlaceOrderApiStep();
+        Response postResponse = step
+                .postOrderForPet(invalidBody)
+                .getResponse();
+
+        Assert.assertEquals(postResponse.getStatusCode(), 500);
+        Assert.assertEquals(postResponse.jsonPath().getString("message"), "something bad happened");
+    }
 }
