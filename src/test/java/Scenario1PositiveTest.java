@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 
 
-public class Scenario1 {
+public class Scenario1PositiveTest {
     @Test
     public void placeOrderTest(){
         RestAssured.useRelaxedHTTPSValidation();

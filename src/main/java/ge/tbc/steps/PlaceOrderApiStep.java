@@ -19,6 +19,17 @@ public class PlaceOrderApiStep {
                 .post("/store/order");
         return this;
     }
+    //ნეგატიური ქეისისთვის
+    public PlaceOrderApiStep postOrderForPet(Object requestBody) {
+        response = RestAssured.given()
+                .baseUri(Constants.BASE_URL)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("/store/order");
+        return this;
+    }
 
     public Response getResponse() {
         return response;
